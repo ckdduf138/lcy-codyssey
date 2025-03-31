@@ -7,10 +7,10 @@ def read_csv_file(filename):
             lines = file.readlines()
         return [line.strip().split(',') for line in lines]  # 쉼표로 분리
     except FileNotFoundError:
-        print(f"Error: {filename} 파일을 찾을 수 없습니다.")
+        print(f'Error: {filename} 파일을 찾을 수 없습니다.')
         return []
     except Exception as e:
-        print(f"Error: {e}")
+        print(f'Error: {e}')
         return []
 
 # 데이터를 정렬하고 필터링하는 함수
@@ -25,7 +25,7 @@ def process_inventory(data):
     try:
         inventory.sort(key=lambda x: float(x[4]), reverse=True)  # 인화성 지수 (5번째 열) 기준으로 정렬
     except ValueError:
-        print("Error: Flammability 값을 숫자로 변환할 수 없습니다.")
+        print('Error: Flammability 값을 숫자로 변환할 수 없습니다.')
         return []
 
     return [header] + inventory  # 헤더 포함하여 반환
@@ -39,11 +39,11 @@ def save_to_csv(filename, data):
     try:
         with open(filename, 'w', encoding='utf-8') as file:
             for row in data:
-                line = ",".join(row) + "\n" 
+                line = ','.join(row) + '\n' 
                 file.write(line)
-        print(f"CSV 파일로 저장 완료: {filename}")
+        print(f'CSV 파일로 저장 완료: {filename}')
     except Exception as e:
-        print(f"Error: {e}")
+        print(f'Error: {e}')
 
 # 이진 파일로 저장
 def save_to_binary(filename, data):
@@ -59,9 +59,9 @@ def save_to_binary(filename, data):
             
             file.write(encoded_data)
                 
-        print(f"\n이진 파일로 저장 완료: {filename}")
+        print(f'\n이진 파일로 저장 완료: {filename}')
     except Exception as e:
-        print(f"이진 파일로 저장 Error: {e}")
+        print(f'이진 파일로 저장 Error: {e}')
 
 # 이진 파일에서 읽어오기
 def read_from_binary(filename):
@@ -76,9 +76,9 @@ def read_from_binary(filename):
         print(decoded_data)
         
     except FileNotFoundError:
-        print(f"Error: {filename} 파일을 찾을 수 없습니다.")
+        print(f'Error: {filename} 파일을 찾을 수 없습니다.')
     except Exception as e:
-        print(f"이진 파일에서 읽어오기 Error: {e}")
+        print(f'이진 파일에서 읽어오기 Error: {e}')
 
 if __name__ == '__main__':
     input_file = 'Mars_Base_Inventory_List.csv'
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     csv_data = read_csv_file(input_file)
 
     # 'Mars_Base_Inventory_List.csv 의 내용을 읽어 들어서 출력한다.'
-    print("Mars_Base_Inventory_List.csv 전체 출력")
+    print('Mars_Base_Inventory_List.csv 전체 출력')
     print(csv_data)
 
     processed_data = process_inventory(csv_data)
@@ -101,9 +101,9 @@ if __name__ == '__main__':
         
         if dangerous_items:
             # 인화성 지수가 0.7 이상되는 목록을 뽑아서 별도로 출력한다.
-            print("인화성 지수가 0.7 이상인 항목 ")
+            print('인화성 지수가 0.7 이상인 항목 ')
             for row in dangerous_items:
-                print(f"물질: {row[0]}, 인화성 지수: {row[4]}")
+                print(f'물질: {row[0]}, 인화성 지수: {row[4]}')
             
             # '인화성 지수가 0.7 이상되는 목록을 CSV 포멧(Mars_Base_Inventory_danger.csv)으로 저장한다.'
             save_to_csv(danger_file, [csv_data[0]] + dangerous_items)
@@ -112,7 +112,7 @@ if __name__ == '__main__':
             save_to_binary(binary_file, processed_data)
 
             # '저장된 Mars_Base_Inventory_List.bin 의 내용을 다시 읽어 들여서 화면에 내용을 출력한다.'
-            print("\n이진 파일에서 데이터 다시 읽기 ")
+            print('\n이진 파일에서 데이터 다시 읽기 ')
             read_from_binary(binary_file)
         else:
-            print("인화성 지수가 0.7 이상인 항목이 없습니다.")
+            print('인화성 지수가 0.7 이상인 항목이 없습니다.')

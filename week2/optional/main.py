@@ -25,8 +25,8 @@ def read_file(fileName: str):
         write_error_log(error_message, 'file_error')
 
 def convert_to_list(content: str) -> list:
-    lines = content.strip().split("\n")
-    data = [line.split(",") for line in lines]
+    lines = content.strip().split('\n')
+    data = [line.split(',') for line in lines]
     
     return data
 
@@ -42,16 +42,16 @@ def save_json_sections(fileName: str, content: dict):
         pass
 
     try:
-        json_content = "{\n"
+        json_content = '{\n'
         for key, value in content.items():
-            key = str(key).replace("\"", "\\\"")
+            key = str(key).replace('\'', '\\\'')
             if isinstance(value, list):
-                value = "[" + ", ".join([f"\"{str(item).replace('\"', '\\\"')}\"" for item in value]) + "]"
+                value = '[' + ', '.join([f'\'{str(item).replace('\'', '\\\'')}\'' for item in value]) + ']'
             else:
-                value = f"\"{str(value).replace('\"', '\\\"')}\""
-            json_content += f'    "{key}": {value},\n'
+                value = f'\'{str(value).replace('\'', '\\\'')}\''
+            json_content += f'    '{key}': {value},\n'
 
-        json_content = json_content.rstrip(',\n') + "\n}"
+        json_content = json_content.rstrip(',\n') + '\n}'
         
         with open(f'{fileName}.json', 'w', encoding='utf-8') as file:
             file.write(json_content)
@@ -61,16 +61,16 @@ def save_json_sections(fileName: str, content: dict):
         print(f'파일 저장 중 오류가 발생했습니다: {e}')
 
 def search_for_key_value(content: dict):
-    search_string = input("검색할 문자열을 입력하세요: ").strip()
+    search_string = input('검색할 문자열을 입력하세요: ').strip()
 
     found = False
     for key, value in content.items():
         if search_string.lower() in str(key).lower() or any(search_string.lower() in str(v).lower() for v in value):
-            print(f"찾은 항목: {key}: {value}")
+            print(f'찾은 항목: {key}: {value}')
             found = True
 
     if not found:
-        print(f"'{search_string}'에 해당하는 항목을 찾을 수 없습니다.")
+        print(f''{search_string}'에 해당하는 항목을 찾을 수 없습니다.')
 
 file_content = read_file('mission_computer_main.log')
 
