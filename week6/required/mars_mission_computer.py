@@ -5,11 +5,11 @@ import json
 class MissionComputer:
     
     def __init__(self):
-        self.os_name = self.get_os_name()
-        self.os_version = self.get_os_version()
-        self.cpu_type = self.get_cpu_type()
-        self.cpu_cores = self.get_cpu_cores()
-        self.memory_size = self.get_memory_size()
+        self.os_name = ''
+        self.os_version = ''
+        self.cpu_type = ''
+        self.cpu_cores = ''
+        self.memory_size = ''
         self.info_settings, self.load_settings = self.load_settings()
 
     def is_unix_like(self):
@@ -92,15 +92,15 @@ class MissionComputer:
         info = {}
         
         if 'OS' in self.info_settings:
-            info['OS'] = self.os_name
+            info['OS'] = self.get_os_name()
         if 'OS Version' in self.info_settings:
-            info['OS Version'] = self.os_version
+            info['OS Version'] = self.get_os_version()
         if 'CPU Type' in self.info_settings:
-            info['CPU Type'] = self.cpu_type
+            info['CPU Type'] = self.get_cpu_type()
         if 'CPU Cores' in self.info_settings:
-            info['CPU Cores'] = self.cpu_cores
+            info['CPU Cores'] = self.get_cpu_cores()
         if 'Memory Size' in self.info_settings:
-            info['Memory Size'] = self.memory_size
+            info['Memory Size'] = self.get_memory_size()
         
         return json.dumps(info, indent=4)
     
@@ -114,13 +114,13 @@ class MissionComputer:
             cpu_usage = get_cpu_usage_windows()
             memory_usage = get_memory_usage_windows()
 
-        load_info = {}
+        load = {}
         if 'CPU Usage' in self.load_settings:
-            load_info['CPU Usage'] = cpu_usage
+            load['CPU Usage'] = cpu_usage
         if 'Memory Usage' in self.load_settings:
-            load_info['Memory Usage'] = memory_usage
+            load['Memory Usage'] = memory_usage
 
-        return json.dumps(load_info, indent=4)
+        return json.dumps(load, indent=4)
 
 def get_memory_usage_windows():
     try:

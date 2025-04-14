@@ -2,6 +2,7 @@
 OS
 OS Version
 CPU Type
+CPU Cores
 Memory Size
 
 [load]
