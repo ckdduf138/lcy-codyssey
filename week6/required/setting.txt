@@ -1,0 +1,9 @@
+[info]
+OS
+OS Version
+CPU Type
+Memory Size
+
+[load]
+CPU Usage
+Memory Usage
