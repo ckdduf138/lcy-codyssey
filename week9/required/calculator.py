@@ -23,7 +23,9 @@ class Calculator(QWidget):
         self.display = QLineEdit()
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
-        self.display.setFont(QFont('Courier', 32))
+        font = QFont()
+        font.setPointSize(32)
+        self.display.setFont(font)
         self.display.setStyleSheet('color: white; background-color: black; border: none; padding: 20px;')
         layout.addWidget(self.display, 0, 0, 1, 4)
 
@@ -68,12 +70,15 @@ class Calculator(QWidget):
 
     def update_display(self, text):
         # 자동 폰트 크기 조정
-        font_size = 32
-        if len(text) > 12:
-            font_size = 24
-        elif len(text) > 18:
-            font_size = 18
-        self.display.setFont(QFont('Courier', font_size))
+        if len(text) > 18:
+            font_size = 12
+        elif len(text) > 6:
+            font_size = 28
+        else:
+            font_size = 32
+        font = QFont()
+        font.setPointSize(font_size)
+        self.display.setFont(font)
         self.display.setText(text)
 
     def reset(self):
