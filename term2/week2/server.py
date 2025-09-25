@@ -3,6 +3,7 @@
 
 import socket
 import threading
+import sys
 from typing import Optional
 
 
@@ -216,12 +217,33 @@ class ChatServer:
 
 
 def main() -> None:
-    server = ChatServer(host='0.0.0.0', port=5000)
-    try:
-        server.start()
-    except KeyboardInterrupt:
-        print('\nKeyboardInterrupt 감지, 서버를 종료합니다.')
-        server.stop()
+    # Allow port override via CLI: `python server.py 5001`
+    start_port = 5000
+    if len(sys.argv) >= 2:
+        try:
+            start_port = int(sys.argv[1])
+        except ValueError:
+            print(f'잘못된 포트값을 받았습니다: {sys.argv[1]}, 기본 {start_port} 사용')
+
+    # Try a range of ports to avoid EADDRINUSE (useful on macOS where some services
+    # may occupy port 5000). Tries start_port .. start_port+9.
+    for port in range(start_port, start_port + 10):
+        server = ChatServer(host='0.0.0.0', port=port)
+        try:
+            server.start()
+            return
+        except OSError as e:
+            # errno differs by platform; inspect message for EADDRINUSE fallback
+            msg = str(e)
+            if 'Address already in use' in msg or getattr(e, 'errno', None) == 98 or getattr(e, 'errno', None) == 48:
+                print(f'포트 {port} 사용 중, 다음 포트를 시도합니다...')
+                continue
+            else:
+                raise
+        except KeyboardInterrupt:
+            print('\nKeyboardInterrupt 감지, 서버를 종료합니다.')
+            server.stop()
+            return
 
 
 if __name__ == '__main__':
