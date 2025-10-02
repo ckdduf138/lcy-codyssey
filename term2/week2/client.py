@@ -20,7 +20,7 @@ def recv_loop(sock: socket.socket) -> None:
 
 def main() -> None:
     host = '127.0.0.1'
-    port = None
+    port = 5004
 
     # If a port is provided, try it (with a few retries). Otherwise scan a small range and connect to the first open port.
     if len(sys.argv) >= 2:
